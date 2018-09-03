@@ -113,9 +113,7 @@ var reverse = function(string) {
 
 // 10. Write a function that determines if a string is a palindrome.
 var palindrome = function(string) {
-	if (string.length === 0) {
-		return true;
-	} else if (string.length === 1) {
+	if (string.length <= 1) {
 		return true;
 	} else {
 		return (string[0].toLowerCase() === string[string.length-1].toLowerCase()) ? palindrome(string.slice(1, string.length - 1)) : false;
@@ -128,11 +126,35 @@ var palindrome = function(string) {
 // modulo(17,5) // 2
 // modulo(22,6) // 4
 var modulo = function(x, y) {
+	if (y === 0) {
+		return NaN;
+	} else if (x < 0 && y < 0) {
+		return -(modulo(-x, -y));
+	} else if (x < 0) {
+		return -(modulo(-x, y));
+	} else if (y < 0) {
+		return modulo(x, -y);
+	} else if (y > x) {
+		return x;
+	} else {
+		return modulo(x - y, y);
+	}
 };
 
 // 12. Write a function that multiplies two numbers without using the * operator or
 // Math methods.
 var multiply = function(x, y) {
+	if (x < 0 && y < 0) {
+		return multiply(-x, -y);
+	} else if (y < 0) {
+		return -multiply(x, -y);
+	} else if (x === 0 || y === 0) {
+		return 0;
+	} else if (y === 1) {
+		return x;
+	} else {
+		return x + multiply(x, y - 1);
+	}
 };
 
 // 13. Write a function that divides two numbers without using the / operator or
@@ -153,21 +175,45 @@ var gcd = function(x, y) {
 // compareStr('house', 'houses') // false
 // compareStr('tomato', 'tomato') // true
 var compareStr = function(str1, str2) {
+	if (str1.length === 0 && str2.length === 0) {
+		return true;
+	} else if (str1.length === 0 || str2.length === 0) {
+		return false;
+	} else {
+		return (str1[0] === str2[0]) ? compareStr(str1.slice(1), str2.slice(1)) : false;
+	}
 };
 
 // 16. Write a function that accepts a string and creates an array where each letter
 // occupies an index of the array.
 var createArray = function(str) {
+	if (str.length === 0) {
+		return [];
+	} else {
+		return [str[0]].concat(createArray(str.slice(1)));
+	}
 };
 
 // 17. Reverse the order of an array
 var reverseArr = function(array) {
+	if (array.length === 0) {
+		return [];
+	} else if (array.length === 1) {
+		return array;
+	} else {
+		return [array[array.length - 1]].concat(reverseArr(array.slice(1, array.length - 1))).concat(array[0]);
+	}
 };
 
 // 18. Create a new array with a given value and length.
 // buildList(0,5) // [0,0,0,0,0]
 // buildList(7,3) // [7,7,7]
 var buildList = function(value, length) {
+	if (length <= 0) {
+		return [];
+	} else {
+		return [value].concat(buildList(value, length - 1));
+	}
 };
 
 // 19. Implement FizzBuzz. Given integer n, return an array of the string representations of 1 to n.
@@ -182,6 +228,11 @@ var fizzBuzz = function(n) {
 // countOccurrence([2,7,4,4,1,4], 4) // 3
 // countOccurrence([2,'banana',4,4,1,'banana'], 'banana') // 2
 var countOccurrence = function(array, value) {
+	if (array.length === 0) {
+		return 0;
+	} else {
+		return (array[0] === value) ? 1 + countOccurrence(array.slice(1), value) : countOccurrence(array.slice(1), value);
+	}
 };
 
 // 21. Write a recursive version of map.
